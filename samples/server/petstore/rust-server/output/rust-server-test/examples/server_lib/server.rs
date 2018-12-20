@@ -13,7 +13,9 @@ use swagger::{Has, XSpanIdString};
 use rust_server_test::{Api, ApiError,
                       DummyGetResponse,
                       DummyPutResponse,
-                      HtmlPostResponse
+                      FileResponseGetResponse,
+                      HtmlPostResponse,
+                      RawJsonGetResponse
 };
 use rust_server_test::models;
 
@@ -44,10 +46,24 @@ impl<C> Api<C> for Server<C> where C: Has<XSpanIdString>{
         Box::new(futures::failed("Generic failure".into()))
     }
 
+    /// Get a file
+    fn file_response_get(&self, context: &C) -> Box<Future<Item=FileResponseGetResponse, Error=ApiError>> {
+        let context = context.clone();
+        println!("file_response_get() - X-Span-ID: {:?}", context.get().0.clone());
+        Box::new(futures::failed("Generic failure".into()))
+    }
+
     /// Test HTML handling
     fn html_post(&self, body: String, context: &C) -> Box<Future<Item=HtmlPostResponse, Error=ApiError>> {
         let context = context.clone();
         println!("html_post(\"{}\") - X-Span-ID: {:?}", body, context.get().0.clone());
+        Box::new(futures::failed("Generic failure".into()))
+    }
+
+    /// Get an arbitrary JSON blob.
+    fn raw_json_get(&self, context: &C) -> Box<Future<Item=RawJsonGetResponse, Error=ApiError>> {
+        let context = context.clone();
+        println!("raw_json_get() - X-Span-ID: {:?}", context.get().0.clone());
         Box::new(futures::failed("Generic failure".into()))
     }
 
